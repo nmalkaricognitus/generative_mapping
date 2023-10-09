@@ -27,7 +27,6 @@ pipeline = pipeline(
     top_k=10,
     num_return_sequences=1,
     eos_token_id=tokenizer.eos_token_id,
-    offload_folder="/path/to/offload/folder",
 )
 
 llm = HuggingFacePipeline(pipeline=pipeline, model_kwargs={'temperature': 0.7})
