@@ -11,6 +11,7 @@ from transformers import pipeline
 import torch
 from langchain.agents import create_sql_agent
 from langchain.agents.agent_toolkits import SQLDatabaseToolkit
+from transformers import AutoModel, AutoTokenizer
 
 model = AutoModel.from_pretrained('learnanything/llama-7b-huggingface')
 tokenizer = AutoTokenizer.from_pretrained('learnanything/llama-7b-huggingface')
