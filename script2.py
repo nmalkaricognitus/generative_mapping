@@ -11,6 +11,8 @@ from transformers import pipeline
 from langchain.agents import create_sql_agent
 from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 import torch
+import sys
+sys.setrecursionlimit(100000)
 
 
 class LLM:
