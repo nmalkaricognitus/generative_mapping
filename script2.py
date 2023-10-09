@@ -12,12 +12,26 @@ from langchain.agents import create_sql_agent
 from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 import torch
 
+
 class LLM:
     def __init__(self, pipeline):
         self.pipeline = pipeline
 
     def generate(self, prompt):
         return self.pipeline.generate(prompt)
+
+
+class LLMPipeline:
+    def __init__(self, model, tokenizer):
+        self.model = model
+        self.tokenizer = tokenizer
+
+    def generate(self, prompt):
+        input_ids = self.tokenizer(prompt, return_tensors="pt").input_ids
+        outputs = self.model.generate(input_ids)
+        generated_text = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+        return generated_text
+
 
 # Create a SQL database object
 db_user = "cognitus"
@@ -26,17 +40,17 @@ db_host = "localhost"
 db_name = "generative_mapping"
 db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}")
 
-# Create an LLM object
+# Create an LLM model
 model = AutoModelForCausalLM.from_pretrained('learnanything/llama-7b-huggingface')
-tokenizer = AutoTokenizer.from_pretrained('learnanything/llama-7b-huggingface')
-pipeline = pipeline(
-    "text-generation",
-    model=model,
-    tokenizer=tokenizer,
-    torch_dtype=torch.bfloat16,
-    device=-1,)
 
-llm = LLM(pipeline)
+# Create an LLM tokenizer
+tokenizer = AutoTokenizer.from_pretrained('learnanything/llama-7b-huggingface')
+
+# Create an LLM pipeline
+llm_pipeline = LLMPipeline(model, tokenizer)
+
+# Create an LLM object
+llm = LLM(llm_pipeline)
 
 # Create a SQL agent object
 from langchain.agents import create_sql_agent
@@ -54,6 +68,7 @@ bot_response = agent.run("How many tables are there")
 
 # Print the bot response
 print(bot_response)
+
 
 # # Create the agent executor
 # agent_executor = langchain.AgentExecutor(llm=llm, db=db, verbose=True)
