@@ -13,6 +13,7 @@ from langchain.agents import create_sql_agent
 from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 from transformers import AutoModel, AutoTokenizer
 
+# Create a single instance of the LLM class
 model = AutoModel.from_pretrained('learnanything/llama-7b-huggingface')
 tokenizer = AutoTokenizer.from_pretrained('learnanything/llama-7b-huggingface')
 pipeline = pipeline(
@@ -34,13 +35,20 @@ db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{d
 
 toolkit = SQLDatabaseToolkit(db=db, llm=llm)
 
-agent_executor = create_sql_agent(
-        llm=llm,
-        toolkit=toolkit,
-        verbose=True)
-bot_response = agent_executor.run("How many tables are there")
+# Create a single instance of the SQL agent class
+agent = create_sql_agent(
+    llm=llm,
+    toolkit=toolkit,
+    verbose=True)
 
-print(bot_response)
+# Run the bot request
+bot_response = agent.run("How many tables are there")
+
+# Log the bot response
+import logging
+logger = logging.getLogger(__name__)
+logger.info(bot_response)
+
 
 # # Create the agent executor
 # agent_executor = langchain.AgentExecutor(llm=llm, db=db, verbose=True)
