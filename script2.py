@@ -1,7 +1,7 @@
 import langchain
 from langchain.sql_database import SQLDatabase
 from langchain import HuggingFacePipeline
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoModelForCausalLM
 from huggingface_hub import hf_hub_download
 hf_hub_download(repo_id="google/pegasus-xsum", filename="config.json")
 from huggingface_hub import login
@@ -9,21 +9,13 @@ login()
 import transformers
 from transformers import pipeline
 import torch
-from langchain.agents import create_sql_agent
-from langchain.agents.agent_toolkits import SQLDatabaseToolkit
-from transformers import AutoModel, AutoTokenizer
 
-# Create a single instance of the LLM class
-model = AutoModel.from_pretrained('learnanything/llama-7b-huggingface')
-tokenizer = AutoTokenizer.from_pretrained('learnanything/llama-7b-huggingface')
-pipeline = pipeline(
-    "text-generation",
-    model=model,
-    tokenizer=tokenizer,
-    torch_dtype=torch.bfloat16,
-    device=-1,)
+class LLM:
+    def __init__(self, pipeline):
+        self.pipeline = pipeline
 
-llm = HuggingFacePipeline(pipeline=pipeline, model_kwargs={'temperature': 0.7})
+    def generate(self, prompt):
+        return self.pipeline.generate(prompt)
 
 # Create a SQL database object
 db_user = "cognitus"
@@ -32,10 +24,24 @@ db_host = "localhost"
 db_name = "generative_mapping"
 db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}")
 
+# Create an LLM object
+model = AutoModelForCausalLM.from_pretrained('learnanything/llama-7b-huggingface')
+tokenizer = AutoTokenizer.from_pretrained('learnanything/llama-7b-huggingface')
+pipeline = pipeline(
+    "text-generation",
+    model=model,
+    tokenizer=tokenizer,
+    torch_dtype=torch.bfloat16,
+    device=-1,)
+
+llm = LLM(pipeline)
+
+# Create a SQL agent object
+from langchain.agents import create_sql_agent
+from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 
 toolkit = SQLDatabaseToolkit(db=db, llm=llm)
 
-# Create a single instance of the SQL agent class
 agent = create_sql_agent(
     llm=llm,
     toolkit=toolkit,
@@ -44,11 +50,8 @@ agent = create_sql_agent(
 # Run the bot request
 bot_response = agent.run("How many tables are there")
 
-# Log the bot response
-import logging
-logger = logging.getLogger(__name__)
-logger.info(bot_response)
-
+# Print the bot response
+print(bot_response)
 
 # # Create the agent executor
 # agent_executor = langchain.AgentExecutor(llm=llm, db=db, verbose=True)
