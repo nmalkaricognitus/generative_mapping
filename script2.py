@@ -46,7 +46,7 @@ db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{d
 # # Print the bot response
 # print(bot_response)
 
-db_chain = SQLDatabase.from_llm(llm, db, verbose=True)
+db_chain = SQLDatabase.from_uri(llm, db, verbose=True)
 
 # Run a SQL query using natural language prompt
 db_chain.run("How many tables are there ?")
