@@ -12,7 +12,7 @@ db_config = {
 }
 
 # Path to the folder containing Excel files
-excel_folder = '/Users/nikhilmalkari/Documents/Cognitus/Generative Mapping/Data'
+excel_folder = '/home/ubuntu/generative_mapping/generative_mapping/Data'
 
 # List of all Excel files in the folder
 excel_files = [file for file in os.listdir(excel_folder) if file.endswith('.xlsx')]
