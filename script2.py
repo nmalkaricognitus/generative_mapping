@@ -12,9 +12,8 @@ import torch
 from langchain.agents import create_sql_agent
 from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 
-# Load the LLaMA 7B language model
-model = "google/pegasus-xsum"
-tokenizer = AutoTokenizer.from_pretrained(model)
+model = AutoModel.from_pretrained('learnanything/llama-7b-huggingface')
+tokenizer = AutoTokenizer.from_pretrained('learnanything/llama-7b-huggingface')
 pipeline = pipeline(
     "text-generation",
     model=model,
