@@ -9,6 +9,8 @@ login()
 import transformers
 from transformers import pipeline
 import torch
+from langchain.agents import create_sql_agent
+from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 
 # Load the LLaMA 7B language model
 model = "google/pegasus-xsum"
@@ -37,6 +39,15 @@ db_host = "localhost"
 db_name = "generative_mapping"
 db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}")
 
+
+toolkit = SQLDatabaseToolkit(db=db, llm=llm)
+
+agent_executor = create_sql_agent(
+        llm=llm,
+        toolkit=toolkit,
+        verbose=True)
+bot_response = agent_executor.run("How many tables are there")
+
 # # Create the agent executor
 # agent_executor = langchain.AgentExecutor(llm=llm, db=db, verbose=True)
 
@@ -46,7 +57,7 @@ db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{d
 # # Print the bot response
 # print(bot_response)
 
-db_chain = SQLDatabase.from_uri(llm, db, verbose=True)
+# db_chain = SQLDatabase.from_uri(llm, db, verbose=True)
 
-# Run a SQL query using natural language prompt
-db_chain.run("How many tables are there ?")
+# # Run a SQL query using natural language prompt
+# db_chain.run("How many tables are there ?")
