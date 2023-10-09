@@ -19,7 +19,7 @@ pipeline = pipeline(
     model=model,
     tokenizer=tokenizer,
     torch_dtype=torch.bfloat16,
-    device=-1,
+    device=-1,)
 
 llm = HuggingFacePipeline(pipeline=pipeline, model_kwargs={'temperature': 0.7})
 
