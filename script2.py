@@ -19,14 +19,7 @@ pipeline = pipeline(
     model=model,
     tokenizer=tokenizer,
     torch_dtype=torch.bfloat16,
-    trust_remote_code=True,
     device=-1,
-    max_length=1000,
-    do_sample=True,
-    top_k=10,
-    num_return_sequences=1,
-    eos_token_id=tokenizer.eos_token_id,
-)
 
 llm = HuggingFacePipeline(pipeline=pipeline, model_kwargs={'temperature': 0.7})
 
@@ -45,6 +38,8 @@ agent_executor = create_sql_agent(
         toolkit=toolkit,
         verbose=True)
 bot_response = agent_executor.run("How many tables are there")
+
+print(bot_response)
 
 # # Create the agent executor
 # agent_executor = langchain.AgentExecutor(llm=llm, db=db, verbose=True)
