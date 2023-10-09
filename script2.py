@@ -37,11 +37,16 @@ db_host = "localhost"
 db_name = "generative_mapping"
 db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}")
 
-# Create the agent executor
-agent_executor = langchain.AgentExecutor(llm=llm, db=db, verbose=True)
+# # Create the agent executor
+# agent_executor = langchain.AgentExecutor(llm=llm, db=db, verbose=True)
 
-# Run the query
-bot_response = agent_executor.run("How many tables are there in the database?")
+# # Run the query
+# bot_response = agent_executor.run("How many tables are there in the database?")
 
-# Print the bot response
-print(bot_response)
+# # Print the bot response
+# print(bot_response)
+
+db_chain = SQLDatabaseChain.from_llm(llm, db, verbose=True)
+
+# Run a SQL query using natural language prompt
+db_chain.run("How many tables are there ?")
