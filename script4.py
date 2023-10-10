@@ -15,6 +15,7 @@ from langchain import HuggingFacePipeline
 from huggingface_hub import hf_hub_download
 from huggingface_hub import login
 login()
+from langchain_experimental.sql import SQLDatabaseChain
 
 db_user = "cognitus"
 db_password = "student"
@@ -33,8 +34,6 @@ llama_pipeline = pipeline(
     device_map="auto",
 )
 
-toolkit = SQLDatabaseToolkit(db=db, llm=llama_pipeline)
-
 # Create the SQL database chain
 # db_chain = SQLDatabaseChain.from_uri(llm,db,verbose=True,resturn_sql=False,use_query_checker=True)
 
@@ -44,7 +43,7 @@ toolkit = SQLDatabaseToolkit(db=db, llm=llama_pipeline)
 # # Print the result
 # print(result)
 
-toolkit = SQLDatabaseToolkit(db=db, llm=llama_pipeline)
+toolkit = SQLDatabaseChain.from_llm(db=db, llm=llama_pipeline)
 
 agent_executor = create_sql_agent(
         llm=llama_pipeline,

@@ -3,36 +3,32 @@ from langchain.sql_database import SQLDatabase
 from langchain import HuggingFacePipeline
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from huggingface_hub import hf_hub_download
+hf_hub_download(repo_id="google/pegasus-xsum", filename="config.json")
 from huggingface_hub import login
 login()
 import transformers
 from transformers import pipeline
+import torch
 from langchain.agents import create_sql_agent
 from langchain.agents.agent_toolkits import SQLDatabaseToolkit
-import torch
-import sys
-sys.setrecursionlimit(100000)
 
+model = AutoModel.from_pretrained('learnanything/llama-7b-huggingface')
+tokenizer = AutoTokenizer.from_pretrained('learnanything/llama-7b-huggingface')
+pipeline = pipeline(
+    "text-generation",
+    model=model,
+    tokenizer=tokenizer,
+    torch_dtype=torch.bfloat16,
+    trust_remote_code=True,
+    device=-1,
+    max_length=1000,
+    do_sample=True,
+    top_k=10,
+    num_return_sequences=1,
+    eos_token_id=tokenizer.eos_token_id,
+)
 
-class LLM:
-    def __init__(self, pipeline):
-        self.pipeline = pipeline
-
-    def generate(self, prompt):
-        return self.pipeline.generate(prompt)
-
-
-class LLMPipeline:
-    def __init__(self, model, tokenizer):
-        self.model = model
-        self.tokenizer = tokenizer
-
-    def generate(self, prompt):
-        input_ids = self.tokenizer(prompt, return_tensors="pt").input_ids
-        outputs = self.model.generate(input_ids)
-        generated_text = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-        return generated_text
-
+llm = HuggingFacePipeline(pipeline=pipeline, model_kwargs={'temperature': 0.7})
 
 # Create a SQL database object
 db_user = "cognitus"
@@ -41,35 +37,16 @@ db_host = "localhost"
 db_name = "generative_mapping"
 db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}")
 
-# Create an LLM model
-model = AutoModelForCausalLM.from_pretrained('learnanything/llama-7b-huggingface')
-
-# Create an LLM tokenizer
-tokenizer = AutoTokenizer.from_pretrained('learnanything/llama-7b-huggingface')
-
-# Create an LLM pipeline
-llm_pipeline = LLMPipeline(model, tokenizer)
-
-# Create an LLM object
-llm = LLM(llm_pipeline)
-
-# Create a SQL agent object
-from langchain.agents import create_sql_agent
-from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 
 toolkit = SQLDatabaseToolkit(db=db, llm=llm)
 
-agent = create_sql_agent(
-    llm=llm,
-    toolkit=toolkit,
-    verbose=True)
+agent_executor = create_sql_agent(
+        llm=llm,
+        toolkit=toolkit,
+        verbose=True)
+bot_response = agent_executor.run("How many tables are there")
 
-# Run the bot request
-bot_response = agent.run("How many tables are there")
-
-# Print the bot response
 print(bot_response)
-
 
 # # Create the agent executor
 # agent_executor = langchain.AgentExecutor(llm=llm, db=db, verbose=True)
