@@ -3,7 +3,6 @@ from langchain.sql_database import SQLDatabase
 from langchain import HuggingFacePipeline
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from huggingface_hub import hf_hub_download
-hf_hub_download(repo_id="google/pegasus-xsum", filename="config.json")
 from huggingface_hub import login
 login()
 import transformers
