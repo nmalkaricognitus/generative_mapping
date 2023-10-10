@@ -36,10 +36,20 @@ llama_pipeline = pipeline(
 toolkit = SQLDatabaseToolkit(db=db, llm=llama_pipeline)
 
 # Create the SQL database chain
-db_chain = SQLDatabaseChain.from_llm(llm,db,verbose=True,resturn_sql=False,use_query_checker=True)
+# db_chain = SQLDatabaseChain.from_uri(llm,db,verbose=True,resturn_sql=False,use_query_checker=True)
 
-# Run the query
-result = db_chain.run("How many tables are there in the database?")
+# # Run the query
+# result = db_chain.run("How many tables are there in the database?")
 
-# Print the result
-print(result)
+# # Print the result
+# print(result)
+
+toolkit = SQLDatabaseToolkit(db=db, llm=llama_pipeline)
+
+agent_executor = create_sql_agent(
+        llm=llama_pipeline,
+        toolkit=toolkit,
+        verbose=True)
+bot_response = agent_executor.run("How many tables are there")
+
+print(bot_response)
