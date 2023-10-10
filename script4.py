@@ -43,7 +43,7 @@ llama_pipeline = pipeline(
 # # Print the result
 # print(result)
 
-toolkit = SQLDatabaseChain.from_uri(db=db, llm=llama_pipeline)
+toolkit = SQLDatabaseChain.from_orm(db=db, llm=llama_pipeline)
 
 agent_executor = create_sql_agent(
         llm=llama_pipeline,
