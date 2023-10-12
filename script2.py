@@ -11,7 +11,7 @@ import torch
 from langchain.agents import create_sql_agent
 from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 
-model = "meta-llama/Llama-2-7b-chat-hf" 
+model = "openlm-research/open_llama_7b_v2" 
 
 tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
 
