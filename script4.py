@@ -35,7 +35,7 @@ llama_pipeline = pipeline(
 )
 
 #Create the SQL database chain
-db_chain = SQLDatabaseChain.from_orm(llama_pipeline,db,verbose=True,resturn_sql=False,use_query_checker=True)
+db_chain = SQLDatabaseChain.from_orm(llama_pipeline,db,resturn_sql=False,use_query_checker=True)
 
 # Run the query
 result = db_chain.run("How many tables are there in the database?")
