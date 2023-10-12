@@ -22,7 +22,7 @@ pipeline = pipeline(
     torch_dtype=torch.bfloat16,
     trust_remote_code=True,
     device=-1,
-    max_length=1000,
+    max_length=10000,
     do_sample=True,
     top_k=10,
     num_return_sequences=1,
@@ -45,7 +45,7 @@ agent_executor = create_sql_agent(
         llm=llm,
         toolkit=toolkit,
         verbose=True)
-bot_response = agent_executor.run("How many tables are there")
+bot_response = agent_executor.run("How many tables are there in the database")
 
 print(bot_response)
 
