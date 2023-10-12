@@ -17,6 +17,15 @@ from huggingface_hub import login
 login()
 from langchain_experimental.sql import SQLDatabaseChain
 
+
+from langchain.agents import create_sql_agent
+from langchain.agents.agent_toolkits import SQLDatabaseToolkit
+from langchain.sql_database import SQLDatabase
+from langchain.llms.openai import OpenAI
+from langchain.agents import AgentExecutor
+from langchain.agents.agent_types import AgentType
+from langchain.chat_models import ChatOpenAI
+
 db_user = "cognitus"
 db_password = "student"
 db_host = "localhost"
@@ -34,14 +43,26 @@ llama_pipeline = pipeline(
     device_map="auto",
 )
 
+toolkit = SQLDatabaseToolkit(db=db, llm=OpenAI(temperature=0))
+
+agent_executor = create_sql_agent(
+    llm=OpenAI(temperature=0),
+    toolkit=toolkit,
+    verbose=True,
+    agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+)
+bot_response = agent_executor.run("How many tables are there")
+
+print(bot_response)
+
 #Create the SQL database chain
-db_chain = SQLDatabaseChain.from_orm(llama_pipeline,db)
+# db_chain = SQLDatabaseChain.from_orm(llama_pipeline,db)
 
-# Run the query
-result = db_chain.run("How many tables are there in the database?")
+# # Run the query
+# result = db_chain.run("How many tables are there in the database?")
 
-# Print the result
-print(result)
+# # Print the result
+# print(result)
 
 # toolkit = SQLDatabaseChain.from_orm(db=db, llm=llama_pipeline)
 
