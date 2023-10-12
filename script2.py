@@ -3,7 +3,6 @@ from langchain.sql_database import SQLDatabase
 from langchain import HuggingFacePipeline
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from huggingface_hub import hf_hub_download
-hf_hub_download(repo_id="google/pegasus-xsum", filename="config.json")
 from huggingface_hub import login
 login()
 import transformers
@@ -12,8 +11,10 @@ import torch
 from langchain.agents import create_sql_agent
 from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 
-model = AutoModel.from_pretrained('learnanything/llama-7b-huggingface')
-tokenizer = AutoTokenizer.from_pretrained('learnanything/llama-7b-huggingface')
+model = "meta-llama/Llama-2-7b-chat-hf" 
+
+tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
+
 pipeline = pipeline(
     "text-generation",
     model=model,
