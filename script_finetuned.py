@@ -16,7 +16,7 @@ model = transformers.AutoModelForCausalLM.from_pretrained(
   trust_remote_code=True
 )
 
-tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
+tokenizer = AutoTokenizer.from_pretrained('mosaicml/mpt-30b')
 
 pipeline = pipeline(
     "text-generation",
