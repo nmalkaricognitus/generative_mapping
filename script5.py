@@ -30,10 +30,11 @@ model = LlamaForCausalLM.from_pretrained(
     model_path, torch_dtype=torch.float16, device_map='auto',
 )
 
-prompt = 'Q: What is the largest animal?\nA:'
-input_ids = tokenizer(prompt, return_tensors="pt").input_ids
+# prompt = 'Q: What is the largest animal?\nA:'
+# input_ids = tokenizer(prompt, return_tensors="pt").input_ids
 
-generation_output = model.generate(
-    input_ids=input_ids, max_new_tokens=32
-)
-print(tokenizer.decode(generation_output[0]))
+# generation_output = model.generate(
+#     input_ids=input_ids, max_new_tokens=32
+# )
+# print(tokenizer.decode(generation_output[0]))
+
