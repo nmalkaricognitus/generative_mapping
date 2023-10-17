@@ -46,6 +46,7 @@ toolkit = SQLDatabaseToolkit(db=db, llm=llm)
 agent_executor = create_sql_agent(
         llm=llm,
         toolkit=toolkit,
+        handle_parsing_errors=True,
         verbose=True)
 bot_response = agent_executor.run("How many tables are there in the database")
 
