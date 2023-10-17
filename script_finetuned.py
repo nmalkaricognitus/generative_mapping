@@ -11,8 +11,16 @@ import torch
 from langchain.agents import create_sql_agent
 from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 
+name = 'mosaicml/mpt-30b-instruct'
+
+config = transformers.AutoConfig.from_pretrained(name, trust_remote_code=True)
+config.attn_config['attn_impl'] = 'triton' 
+config.init_device = 'cuda:0' 
+
 model = transformers.AutoModelForCausalLM.from_pretrained(
-  'mosaicml/mpt-30b-instruct',
+  name,
+  config=config,
+  torch_dtype=torch.bfloat16, 
   trust_remote_code=True
 )
 
