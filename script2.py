@@ -45,7 +45,7 @@ agent_executor = create_sql_agent(
         llm=llm,
         toolkit=toolkit,
         verbose=True)
-bot_response = agent_executor.run("How many tables are there in the database")
+bot_response = agent_executor.run("What is the total number of tables present in the database")
 
 print(bot_response)
 
