@@ -1,5 +1,6 @@
 import transformers
 import json
+import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 # Load the LLAMA 2 model and tokenizer
@@ -18,6 +19,8 @@ for sql_query in sql_data:
     input_sequence = tokenizer(sql_query["question"])["input_ids"]
     output_sequence = tokenizer(sql_query["answer"], return_tensors="pt")["input_ids"]
 
+    input_sequence = torch.tensor(input_sequence)
+    output_sequence = torch.tensor(output_sequence)
 
     # Add the input and output sequences to the training data
     training_data.append((input_sequence, output_sequence))
