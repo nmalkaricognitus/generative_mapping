@@ -162,7 +162,8 @@ for i in range(epochs):
 
 ft_llm = finetune_engine.get_finetuned_model(max_tokens=300)
 
-tokenizer = transformers.AutoTokenizer.from_pretrained(ft_llm, use_auth_token=True)
+tokenizer = AutoTokenizer.from_pretrained(ft_llm)
+model = AutoModelForCausalLM.from_pretrained(ft_llm, torch_dtype=torch.bfloat16)
 
 pipeline = pipeline(
     "text-generation",
