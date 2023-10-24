@@ -38,7 +38,7 @@ model.train()
 for epoch in range(10):
     for input_sequence, output_sequence in training_data:
         model_output = model(input_ids=input_sequence)
-        loss = model_output.loss.item()
+        loss = model_output.loss
 
         # Update the model parameters
         optimizer.zero_grad()
