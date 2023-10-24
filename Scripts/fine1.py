@@ -22,6 +22,9 @@ for sql_query in sql_data:
     input_sequence = torch.tensor(input_sequence)
     output_sequence = torch.tensor(output_sequence)
 
+    input_sequence = input_sequence.unsqueeze(0)
+
+
     # Add the input and output sequences to the training data
     training_data.append((input_sequence, output_sequence))
 
