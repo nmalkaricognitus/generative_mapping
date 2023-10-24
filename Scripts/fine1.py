@@ -34,13 +34,13 @@ for sql_query in sql_data:
 model.train()
 for epoch in range(10):
     for input_sequence, output_sequence in training_data:
-        # Calculate the loss
-        loss = model(input_ids=input_sequence, labels=output_sequence)
+        model_output = model(input_ids=input_sequence)
+        loss = model_output.loss.item()
 
         # Update the model parameters
         optimizer.zero_grad()
         loss.backward()
-        model.optimizer.step()
+        optimizer.step()
 
 # Save the fine-tuned LLAMA 2 model
 model.save_pretrained("finetuned_llama_2_sql_json", optimizer=optimizer)
