@@ -155,7 +155,7 @@ finetune_engine = GradientFinetuneEngine(
     batch_size=4,
 )
 
-epochs = 1
+epochs = 10
 for i in range(epochs):
     print(f"** EPOCH {i} **")
     finetune_engine.finetune()
@@ -167,7 +167,7 @@ model = AutoModelForCausalLM.from_pretrained(ft_llm, torch_dtype=torch.bfloat16)
 
 pipeline = pipeline(
     "text-generation",
-    model=ft_llm,
+    model=model,
     tokenizer=tokenizer,
     torch_dtype=torch.bfloat16,
     trust_remote_code=True,
