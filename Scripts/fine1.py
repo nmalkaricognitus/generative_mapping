@@ -3,6 +3,12 @@ import transformers
 import json
 import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, AdamW
+import accelerate
+
+accelerator = accelerate.Accelerator()
+
+# Set the gradient accumulation steps
+accelerator.gradient_accumulation_steps = 10
 
 # Load the LLAMA 2 model and tokenizer
 model = transformers.AutoModelForSeq2SeqLM.from_pretrained("facebook/bart-large-cnn")
