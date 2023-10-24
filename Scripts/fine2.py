@@ -2,7 +2,7 @@ import os
 from llama_index.llms import GradientBaseModelLLM
 from llama_index.finetuning.gradient.base import GradientFinetuneEngine
 
-os.environ["GRADIENT_ACCESS_TOKEN"] = os.getenv("GELlkbMRDD1t07FvT1xeijuYCpxXCAiT")
+os.environ["GRADIENT_ACCESS_TOKEN"] = "GELlkbMRDD1t07FvT1xeijuYCpxXCAiT"
 os.environ["GRADIENT_WORKSPACE_ID"] = ""
 
 dialect = "sql"
