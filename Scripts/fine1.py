@@ -2,6 +2,7 @@ import transformers
 import json
 import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, AdamW
+from accelerate import Accelerator
 
 # Load the LLAMA 2 model and tokenizer
 model = transformers.AutoModelForSeq2SeqLM.from_pretrained("facebook/bart-large-cnn")
@@ -9,6 +10,8 @@ model = transformers.AutoModelForSeq2SeqLM.from_pretrained("facebook/bart-large-
 tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/bart-large-cnn")
 
 optimizer = AdamW(model.parameters())
+
+accelerator = Accelerator()
 
 # Load the SQL data in JSON format
 with open("/home/ubuntu/generative_mapping/generative_mapping/Data/sql_create_context_v4.json", "r") as f:
@@ -30,7 +33,7 @@ for sql_query in sql_data:
     # Add the input and output sequences to the training data
     training_data.append((input_sequence, output_sequence))
 
-# Finetune the LLAMA 2 model on the SQL data
+
 model.train()
 for epoch in range(10):
     for input_sequence, output_sequence in training_data:
@@ -39,8 +42,9 @@ for epoch in range(10):
 
         # Update the model parameters
         optimizer.zero_grad()
-        loss.backward()
+        accelerator.backward(loss)
         optimizer.step()
+
 
 # Save the fine-tuned LLAMA 2 model
 model.save_pretrained("finetuned_llama_2_sql_json", optimizer=optimizer)
