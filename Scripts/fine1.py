@@ -3,7 +3,7 @@ import json
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 # Load the LLAMA 2 model and tokenizer
-model = "meta-llama/Llama-2-7b-chat-hf" 
+model = transformers.AutoModelForSeq2SeqLM.from_pretrained("facebook/bart-large-cnn")
 
 tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
 
