@@ -12,7 +12,6 @@ from huggingface_hub import login
 dataset = SpiderDataset('/Users/nikhilmalkari/Documents/Cognitus/GenerativeMapping/generative_mapping/spider')
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
-
 model = "openlm-research/open_llama_7b_v2" 
 
 tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
