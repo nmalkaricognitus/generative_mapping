@@ -44,8 +44,8 @@ model.train()
 for epoch in range(10):
     for input_sequence, output_sequence in training_data:
         # Move the input and output sequences to the accelerator
-        input_sequence = accelerator.prepare_input(input_sequence)
-        output_sequence = accelerator.prepare_input(output_sequence)
+        input_sequence = accelerator._prepare_ipex(input_sequence)
+        output_sequence = accelerator._prepare_ipex(output_sequence)
 
         # Calculate the loss
         model_output = model(input_ids=input_sequence)
