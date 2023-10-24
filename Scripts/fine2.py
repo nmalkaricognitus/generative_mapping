@@ -162,7 +162,7 @@ for i in range(epochs):
 
 ft_llm = finetune_engine.get_finetuned_model(max_tokens=300)
 
-tokenizer = AutoTokenizer.from_pretrained(ft_llm, use_auth_token=True)
+tokenizer = transformers.AutoTokenizer.from_pretrained(ft_llm, use_auth_token=True)
 
 pipeline = pipeline(
     "text-generation",
