@@ -1,12 +1,14 @@
 import transformers
 import json
 import torch
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, AdamW
 
 # Load the LLAMA 2 model and tokenizer
 model = transformers.AutoModelForSeq2SeqLM.from_pretrained("facebook/bart-large-cnn")
 
 tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/bart-large-cnn")
+
+optimizer = AdamW(model.parameters())
 
 # Load the SQL data in JSON format
 with open("/home/ubuntu/generative_mapping/generative_mapping/Data/sql_create_context_v4.json", "r") as f:
