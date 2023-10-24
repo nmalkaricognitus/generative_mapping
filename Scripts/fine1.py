@@ -38,9 +38,9 @@ for epoch in range(10):
         loss = model(input_ids=input_sequence, labels=output_sequence)
 
         # Update the model parameters
-        model.optimizer.zero_grad()
+        optimizer.zero_grad()
         loss.backward()
         model.optimizer.step()
 
 # Save the fine-tuned LLAMA 2 model
-model.save_pretrained("finetuned_llama_2_sql_json")
+model.save_pretrained("finetuned_llama_2_sql_json", optimizer=optimizer)
