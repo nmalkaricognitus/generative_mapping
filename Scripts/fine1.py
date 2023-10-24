@@ -5,7 +5,7 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 # Load the LLAMA 2 model and tokenizer
 model = transformers.AutoModelForSeq2SeqLM.from_pretrained("facebook/bart-large-cnn")
 
-tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
+tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/bart-large-cnn")
 
 # Load the SQL data in JSON format
 with open("/home/ubuntu/generative_mapping/generative_mapping/Data/sql_create_context_v4.json", "r") as f:
