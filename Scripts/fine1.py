@@ -8,7 +8,7 @@ model = "meta-llama/Llama-2-7b-chat-hf"
 tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
 
 # Load the SQL data in JSON format
-with open("/Users/nikhilmalkari/Documents/Cognitus/GenerativeMapping/Data/sql_create_context_v4.json", "r") as f:
+with open("/home/ubuntu/generative_mapping/generative_mapping/Data/sql_create_context_v4.json", "r") as f:
     sql_data = json.load(f)
 
 # Prepare the training data
