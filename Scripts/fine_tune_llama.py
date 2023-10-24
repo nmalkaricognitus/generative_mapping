@@ -16,10 +16,8 @@ model = "openlm-research/open_llama_7b_v2"
 
 tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
 
-
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
 loss_fn = torch.nn.CrossEntropyLoss()
-
 
 for epoch in range(3):
     for batch in dataloader:
