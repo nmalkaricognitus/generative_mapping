@@ -1,6 +1,4 @@
 import os
-from llama_index.llms import GradientBaseModelLLM
-from llama_index.finetuning.gradient.base import GradientFinetuneEngine
 import langchain
 from langchain.sql_database import SQLDatabase
 from langchain import HuggingFacePipeline
