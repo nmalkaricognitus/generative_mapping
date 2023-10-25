@@ -163,7 +163,7 @@ for i in range(epochs):
 ft_llm = finetune_engine.get_finetuned_model(max_tokens=300)
 
 model = AutoModelForCausalLM.from_pretrained(ft_llm, torch_dtype=torch.bfloat16)
-tokenizer = AutoTokenizer.from_pretrained("eta-llama/Llama-2-7b-chat-hf", use_auth_token=True)
+tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
 
 pipeline = pipeline(
     "text-generation",
