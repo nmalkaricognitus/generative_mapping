@@ -12,12 +12,13 @@ from langchain.agents import create_sql_agent
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 
-tokenizer = T5Tokenizer.from_pretrained('xianglingjing/llama-2-7b-int4-text-to-sql')
-
 # Load the model
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = T5ForConditionalGeneration.from_pretrained('xianglingjing/llama-2-7b-int4-text-to-sql')
+model = "xianglingjing/llama-2-7b-int4-text-to-sql" 
 model = model.to(device)
+
+
+tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
 
 model.eval()
 
