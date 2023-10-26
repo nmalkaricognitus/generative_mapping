@@ -19,7 +19,6 @@ model = "xianglingjing/llama-2-7b-int4-text-to-sql"
 
 tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
 
-model.eval()
 
 def generate_sql(input_prompt):
     # Tokenize the input prompt
