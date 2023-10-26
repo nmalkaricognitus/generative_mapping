@@ -46,6 +46,6 @@ agent_executor = create_sql_agent(
         llm=llm,
         toolkit=toolkit,
         verbose=True)
-bot_response = agent_executor.run("What is the total number of tables present in the database")
+bot_response = agent_executor.run("In Material.xslx, what is the value of the short Description where Table Name is AENAM")
 
 print(bot_response)
