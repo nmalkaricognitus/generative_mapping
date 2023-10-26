@@ -1,6 +1,5 @@
 import torch
 from transformers import BitsAndBytesConfig
-
 from llama_index import HuggingFaceLLM
 from llama_index import PromptTemplate
 
