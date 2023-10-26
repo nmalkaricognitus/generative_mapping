@@ -1,7 +1,8 @@
 import torch
 from transformers import BitsAndBytesConfig
-from llama_index.prompts import PromptTemplate
-from llama_index.llms import HuggingFaceLLM
+
+from llama_index import HuggingFaceLLM
+from llama_index import PromptTemplate
 
 quantization_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -56,7 +57,7 @@ service_context = ServiceContext.from_defaults(llm=llm, embed_model="local:BAAI/
 
 # summary_index = SummaryIndex.from_documents(documents, service_context=service_context)
 
-from llama_index.response.notebook_utils import display_response
+from llama_index import display_response
 
 import logging
 import sys
@@ -80,7 +81,7 @@ from llama_index import SQLDatabase
 sql_database = SQLDatabase(engine)
 
 
-from llama_index.indices.struct_store import NLSQLTableQueryEngine
+from llama_index import NLSQLTableQueryEngine
 
 query_engine = NLSQLTableQueryEngine(
     sql_database=sql_database,
