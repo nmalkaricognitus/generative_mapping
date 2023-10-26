@@ -15,7 +15,6 @@ from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 # Load the model
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = "xianglingjing/llama-2-7b-int4-text-to-sql" 
-model = model.to(device)
 
 
 tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
