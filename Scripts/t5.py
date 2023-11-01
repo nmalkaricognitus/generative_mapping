@@ -10,7 +10,6 @@ quantization_config = BitsAndBytesConfig(
     bnb_4bit_use_double_quant=True,
 )
 
-
 def messages_to_prompt(messages):
   prompt = ""
   for message in messages:

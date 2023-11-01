@@ -160,39 +160,39 @@ for i in range(epochs):
 
 ft_llm = finetune_engine.get_finetuned_model(max_tokens=300)
 
-# model = AutoModelForCausalLM.from_pretrained(ft_llm, torch_dtype=torch.bfloat16)
-# tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
+model = AutoModelForCausalLM.from_pretrained(ft_llm, torch_dtype=torch.bfloat16)
+tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=True)
 
-# pipeline = pipeline(
-#     "text-generation",
-#     model=model,
-#     tokenizer=tokenizer,
-#     torch_dtype=torch.bfloat16,
-#     trust_remote_code=True,
-#     device=0,
-#     max_length=10000,
-#     do_sample=True,
-#     top_k=10,
-#     num_return_sequences=1,
-#     eos_token_id=tokenizer.eos_token_id,
-# )
+pipeline = pipeline(
+    "text-generation",
+    model=model,
+    tokenizer=tokenizer,
+    torch_dtype=torch.bfloat16,
+    trust_remote_code=True,
+    device=0,
+    max_length=10000,
+    do_sample=True,
+    top_k=10,
+    num_return_sequences=1,
+    eos_token_id=tokenizer.eos_token_id,
+)
 
-# llm = HuggingFacePipeline(pipeline=pipeline, model_kwargs={'temperature': 0.7})
+llm = HuggingFacePipeline(pipeline=pipeline, model_kwargs={'temperature': 0.7})
 
-# # Create a SQL database object
-# db_user = "cognitus"
-# db_password = "student"
-# db_host = "localhost"
-# db_name = "generative_mapping"
-# db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}")
+# Create a SQL database object
+db_user = "cognitus"
+db_password = "student"
+db_host = "localhost"
+db_name = "generative_mapping"
+db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}")
 
 
-# toolkit = SQLDatabaseToolkit(db=db, llm=llm)
+toolkit = SQLDatabaseToolkit(db=db, llm=llm)
 
-# agent_executor = create_sql_agent(
-#         llm=llm,
-#         toolkit=toolkit,
-#         verbose=True)
-# bot_response = agent_executor.run("What is the total number of tables present in the database")
+agent_executor = create_sql_agent(
+        llm=llm,
+        toolkit=toolkit,
+        verbose=True)
+bot_response = agent_executor.run("What is the total number of tables present in the database")
 
-# print(bot_response)
+print(bot_response)
