@@ -1,29 +1,37 @@
-from transformers import AutoTokenizer
-import transformers
-import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
-tokenizer = AutoTokenizer.from_pretrained("codellama/CodeLlama-7b-hf")
-pipeline = transformers.pipeline(
+model_name_or_path = "TheBloke/CodeLlama-7B-Instruct-GPTQ"
+
+model = AutoModelForCausalLM.from_pretrained(model_name_or_path,device_map="auto",trust_remote_code=True,revision="main")
+
+tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=True)
+
+prompt = "Tell me about AI"
+prompt_template=f'''[INST] Write code to solve the following coding problem that obeys the constraints and passes the example test cases. Please wrap your code answer using ```:
+{prompt}
+[/INST]
+
+'''
+
+print("\n\n*** Generate:")
+
+input_ids = tokenizer(prompt_template, return_tensors='pt').input_ids.cuda()
+output = model.generate(inputs=input_ids, temperature=0.7, do_sample=True, top_p=0.95, top_k=40, max_new_tokens=512)
+print(tokenizer.decode(output[0]))
+
+# Inference can also be done using transformers' pipeline
+
+print("*** Pipeline:")
+pipe = pipeline(
     "text-generation",
-    model="codellama/CodeLlama-7b-hf",
-    torch_dtype=torch.float16,
-    device_map="auto",
-)
-
-system = "Provide answers in Python"
-user = "Write a function that computes the set of sums of all contiguous sublists of a given list."
-
-prompt = f"<s><<SYS>>\\n{system}\\n<</SYS>>\\n\\n{user}"
-
-sequences = pipeline(
-    prompt ,
+    model=model,
+    tokenizer=tokenizer,
+    max_new_tokens=512,
     do_sample=True,
-    temperature=0.1,
-    top_p=0.9,
-    num_return_sequences=1,
-    eos_token_id=tokenizer.eos_token_id,
-    max_length=400,
+    temperature=0.7,
+    top_p=0.95,
+    top_k=40,
+    repetition_penalty=1.1
 )
 
-for seq in sequences:
-    print(f"Result: {seq['generated_text']}")
+print(pipe(prompt_template)[0]['generated_text'])
