@@ -6,7 +6,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name_or_path,device_map="auto
 
 tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=True)
 
-prompt = "Write code to solve the following coding problem that obeys the constraints and passes the example test cases."
+prompt = "Write a python code where it takes a dataframe and multiples all the numerical columns by two and update the dataframe"
 prompt_template=f'''[INST] Write a python code where it takes a dataframe and multiples all the numerical columns by two and update the dataframe. Please wrap your code answer using ```:
 {prompt}
 [/INST]
