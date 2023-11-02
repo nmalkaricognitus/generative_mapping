@@ -6,7 +6,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name_or_path,device_map="auto
 
 tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=True)
 
-prompt = "Tell me about AI"
+prompt = "Write code to solve the following coding problem that obeys the constraints and passes the example test cases."
 prompt_template=f'''[INST] Write code to solve the following coding problem that obeys the constraints and passes the example test cases. Please wrap your code answer using ```:
 {prompt}
 [/INST]
@@ -19,7 +19,6 @@ input_ids = tokenizer(prompt_template, return_tensors='pt').input_ids.cuda()
 output = model.generate(inputs=input_ids, temperature=0.7, do_sample=True, top_p=0.95, top_k=40, max_new_tokens=512)
 print(tokenizer.decode(output[0]))
 
-# Inference can also be done using transformers' pipeline
 
 print("*** Pipeline:")
 pipe = pipeline(
