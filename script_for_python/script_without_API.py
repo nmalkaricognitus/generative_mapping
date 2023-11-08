@@ -14,7 +14,7 @@ def generate_code(prompt):
     return generated_code
 
 if __name__ == '__main__':
-    prompt = "write a python code to multply all the columns by 2 in the dataframe"
+    prompt = "write a javascript code to multply all the columns by 2 in the dataframe"
     generated_code = generate_code(prompt)
     print("Generated Code:")
     print(generated_code)
